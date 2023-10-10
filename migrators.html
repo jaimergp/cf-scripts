@@ -1,19 +1,16 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Making Migrators &#8212; cf-scripts  documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Usage Docs" href="usage.html" />
@@ -35,7 +32,7 @@
           <div class="body" role="main">
             
   <section id="making-migrators">
-<h1>Making Migrators<a class="headerlink" href="#making-migrators" title="Permalink to this heading">¶</a></h1>
+<h1>Making Migrators<a class="headerlink" href="#making-migrators" title="Link to this heading">¶</a></h1>
 <p>Migration is an important part of the regro-cf-autotick-bot’s duties.
 Migrations usually change how many feedstocks/packages operate, these can be
 as simple as a yaml syntax change, or as complex as moving compiler stacks.
@@ -51,18 +48,18 @@ This document will teach you how to create new migrators.</p>
 </div></blockquote>
 </section>
 <section id="migrating-branches-on-your-feedstock">
-<h1>Migrating Branches on Your Feedstock<a class="headerlink" href="#migrating-branches-on-your-feedstock" title="Permalink to this heading">¶</a></h1>
+<h1>Migrating Branches on Your Feedstock<a class="headerlink" href="#migrating-branches-on-your-feedstock" title="Link to this heading">¶</a></h1>
 <p>If you’d like to have the bot apply migrations to branches on your feedstock,
 add the following to your <code class="docutils literal notranslate"><span class="pre">conda-forge.yml</span></code></p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">bot</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">abi_migration_branches</span><span class="p">:</span><span class="w"></span>
-<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1.10.x</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">bot</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">abi_migration_branches</span><span class="p">:</span>
+<span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1.10.x</span>
 </pre></div>
 </div>
 <p>Note that <code class="docutils literal notranslate"><span class="pre">master</span></code> or <code class="docutils literal notranslate"><span class="pre">main</span></code> will always be included.</p>
 </section>
 <section id="building-a-migration-yaml-using-cfep9">
-<h1>Building a Migration YAML Using CFEP9<a class="headerlink" href="#building-a-migration-yaml-using-cfep9" title="Permalink to this heading">¶</a></h1>
+<h1>Building a Migration YAML Using CFEP9<a class="headerlink" href="#building-a-migration-yaml-using-cfep9" title="Link to this heading">¶</a></h1>
 <p>For most migrations a migration can be created by adding a new migration yaml file in the <code class="docutils literal notranslate"><span class="pre">recipe/migrations</span></code> folder of <code class="docutils literal notranslate"><span class="pre">conda-forge-pinning-feedstock</span></code> and issuing a PR.
 Once merged the migration will start.
 You can copy the <code class="docutils literal notranslate"><span class="pre">recipe/migrations/example.exyaml</span></code> example and modify it similar to the staged-recipes example recipe.
@@ -71,7 +68,7 @@ Note that the <code class="docutils literal notranslate"><span class="pre">migra
 different kinds of migrations that are available.</p>
 </section>
 <section id="custom-migrations">
-<h1>Custom Migrations<a class="headerlink" href="#custom-migrations" title="Permalink to this heading">¶</a></h1>
+<h1>Custom Migrations<a class="headerlink" href="#custom-migrations" title="Link to this heading">¶</a></h1>
 <p>Custom migrators are used when</p>
 <ol class="arabic simple">
 <li><p>the internals of the conda-forge system (e.g., the various yaml configuration files)
@@ -81,13 +78,13 @@ a dependency, etc.)</p></li>
 </ol>
 <p>To add a custom migration, follow the following steps.</p>
 <section id="write-your-custom-migration-class">
-<h2>Write your Custom Migration Class<a class="headerlink" href="#write-your-custom-migration-class" title="Permalink to this heading">¶</a></h2>
+<h2>Write your Custom Migration Class<a class="headerlink" href="#write-your-custom-migration-class" title="Link to this heading">¶</a></h2>
 <p>Your <code class="docutils literal notranslate"><span class="pre">Migration</span></code> instance should inherit from <code class="docutils literal notranslate"><span class="pre">conda_forge_tick.migrations.core.Migration</span></code>.
 You should implement the <code class="docutils literal notranslate"><span class="pre">migrate</span></code> method and override any other methods in order to make
 a good looking pull request with a correct change to the feedstock.</p>
 </section>
 <section id="add-your-migration-to-auto-tick-py">
-<h2>Add your <code class="docutils literal notranslate"><span class="pre">Migration</span></code> to <code class="docutils literal notranslate"><span class="pre">auto_tick.py</span></code><a class="headerlink" href="#add-your-migration-to-auto-tick-py" title="Permalink to this heading">¶</a></h2>
+<h2>Add your <code class="docutils literal notranslate"><span class="pre">Migration</span></code> to <code class="docutils literal notranslate"><span class="pre">auto_tick.py</span></code><a class="headerlink" href="#add-your-migration-to-auto-tick-py" title="Link to this heading">¶</a></h2>
 <p>To have the bot run the migration, we need to add the migrator to add it to the
 <code class="docutils literal notranslate"><span class="pre">auto_tick</span></code> module.
 If the migrator needs no information about the graph (eg. version bumps) then
@@ -170,8 +167,8 @@ to the migrators list.</p>
       &copy;2019, Conda-forge-tick Development Team.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |
       <a href="_sources/migrators.rst.txt"
